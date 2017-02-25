@@ -18,38 +18,19 @@ function search(choices, _callback){
           choices.push({text: food[i].name, votes:[]});
         }
         _callback(choices);
-        // console.log("second",choices);
-        // var pollObj = {question: question, choices: choices};
-        // var poll = new Poll(pollObj);
-
-        // poll.save(function(err, doc) {
-        //   if(err || !doc) {
-        //     throw 'Error';
-        //   } else {
-        //     res.json(doc);
-        //     //res.send({redirect: '/#/poll'+doc._id});
-        //   }   
-        // })
+    
       })
       .catch(function (err) {
         console.error(err);
       });
   }
-  function getData(choices,callback){
-    search(choices,function(response){
-      console.log("Im done");
-      //console.log(response);
-      callback(response);
-    })
-  }
-  module.exports = {
-  	get_data: function(choices,callback){
-    	search(choices,function(response){
-      	console.log("Im done");
-      	//console.log(response);
-      	callback(response);
-    	})
-  	}
-  }
+  
+module.exports = {
+	get_data: function(choices,callback){
+	search(choices,function(response){
+  	callback(response);
+	})
+	}
+}
 
  

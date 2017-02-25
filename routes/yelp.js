@@ -7,13 +7,13 @@ var yelp = new Yelp({
   token_secret: '4UsxJ_10D2vR7vNSwvgVIG5PYsE',
 });
 
-function search(choices, _callback){
+function search(location, _callback){
     console.log("search");
-    yelp.search({ term: "Soup", location: '61820' })
+    yelp.search({ term: "Soup", location: location })
       .then(function (data) {
         //console.log(data.businesses);
         var food = data.businesses;
-        // var chocies = [];
+        var choices = [];
         for(var i = 0; i < 10; i++){
           choices.push({text: food[i].name, votes:[]});
         }
@@ -35,16 +35,10 @@ function search(choices, _callback){
         console.error(err);
       });
   }
-  function getData(choices,callback){
-    search(choices,function(response){
-      console.log("Im done");
-      //console.log(response);
-      callback(response);
-    })
-  }
+
   module.exports = {
-  	get_data: function(choices,callback){
-    	search(choices,function(response){
+  	get_data: function(location,callback){
+    	search(location,function(response){
       	console.log("Im done");
       	//console.log(response);
       	callback(response);

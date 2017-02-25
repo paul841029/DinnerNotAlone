@@ -37,9 +37,9 @@ function PollNewCtrl($scope, $location, Poll) {
     question: '',
     choices: [{ text: '' }, { text: '' }, { text: '' }, { text: 'Dinner with Jack\'s lonely soul' }]
   };
-  // $scope.addChoice = function() {
-  //   $scope.poll.choices.push({ text: '' });
-  // };
+  $scope.addChoice = function() {
+    $scope.poll.choices.push({ text: '' });
+  };
   $scope.createPoll = function() {
     var poll = $scope.poll;
     

@@ -48,8 +48,10 @@ router.vote = function(socket){
       }
       Poll.findById(data.poll_id, function(err, poll) {
       var choice = poll.choices.id(data.choice);
-      choice.votes.push({ user: user});  
+      choice.votes.push({ user: user});
+      console.log("hi");
       poll.save(function(err, doc) {
+
         var theDoc = { 
           question: doc.question, _id: doc._id, choices: doc.choices, 
           userVoted: false, totalVotes: 0 
@@ -174,12 +176,21 @@ router.post('/polls', function(req,res,next){
   var preference = user.preference;
 
   var question = req.body.question;
-  var choices = []
-  yelp_data.get_data(choices,function(response){
-        var pollObj = {question: question, choices: response};
+  var survey_choices = req.body.choices;
+  var location = req.body.location;
+  yelp_data.get_data(location,function(response){
+        console.log(location);
+        for(i in survey_choices){
+          if(survey_choices[i].text.length > 0){
+            response.push({text: survey_choices[i].text, vote:[]});
+          }
+        }
+        var pollObj = {question: question, choices: response, location: location};
+        
         var poll = new Poll(pollObj);
         poll.save(function(err, doc) {
           if(err || !doc) {
+            console.log("error here");
             throw 'Error';
           } else {
             res.json(doc);
@@ -187,7 +198,7 @@ router.post('/polls', function(req,res,next){
           }   
         })
   });
-  
+
 })
 
 module.exports = router;

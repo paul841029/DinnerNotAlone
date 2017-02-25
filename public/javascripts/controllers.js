@@ -35,7 +35,7 @@ function PollItemCtrl($scope, $routeParams, socket, Poll) {
 function PollNewCtrl($scope, $location, Poll) {
   $scope.poll = {
     question: '',
-    choices: [{ text: '' }, { text: '' }, { text: '' }]
+    choices: [{ text: '' }, { text: '' }, { text: '' }, { text: 'Dinner with Harry Potter' }]
   };
   // $scope.addChoice = function() {
   //   $scope.poll.choices.push({ text: '' });

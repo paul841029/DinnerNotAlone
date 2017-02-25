@@ -75,14 +75,18 @@ router.vote = function(socket){
 /* GET login page. */
 router.get('/', function(req, res, next) {
     // Display the Login page with any flash message, if any
-
-  res.render('index', { title : "Polls" });
+  if(req.user){
+    console.log("hey");
+    res.redirect('/home');
+  }else{
+    res.render('index', { title : "DinnerNotAlone" });
+  }
 });
 
 
 /* GET Home Page */
 router.get('/home', isAuthenticated, function(req, res, next){
-  res.render('poll', { title : 'Polls', user: req.user });
+  res.render('poll', { title : 'Ultimate Poll Arena', user: req.user });
 });
 
 /* Handle Logout */
@@ -112,7 +116,8 @@ router.get('/ppap',function(req,res,next){
 
   // JSON API for list of polls
 router.get('/polls/polls', function(req, res, next){
-  Poll.find({}, 'question', function(error, polls){
+  Poll.find({}, 'question', 
+  function(error, polls){
     res.json(polls);
   });
 });
@@ -185,17 +190,18 @@ router.post('/polls', function(req,res,next){
   var user = req.user;
   console.log('user.preference',user.preference);
   var preference = user.preference;
-  
-  yelp.search({ term: "Mexican Food", location: 'Champaign' })
+  var question = req.body.question
+
+  yelp.search({ term: "Soup", location: '61820' })
       .then(function (data) {
         //console.log(data.businesses);
         var food = data.businesses;
         var choices = [];
-        for(var i = 0; i < 5; i++){
+        for(var i = 0; i < 10; i++){
           choices.push({text: food[i].name, votes:[]});
         }
         console.log(choices);
-        var pollObj = {question: 'Question 3', choices: choices};
+        var pollObj = {question: question, choices: choices};
         var poll = new Poll(pollObj);
 
         poll.save(function(err, doc) {

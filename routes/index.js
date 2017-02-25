@@ -190,9 +190,9 @@ router.post('/polls', function(req,res,next){
   var user = req.user;
   console.log('user.preference',user.preference);
   var preference = user.preference;
-  var question = req.body.question
-  
-  console.log('Original Choices: ', req.body.choices);
+
+  var question = req.body.question;
+  var survey_choices = req.body.choices;
 
   yelp.search({ term: "Soup", location: '61820' })
       .then(function (data) {
@@ -202,7 +202,13 @@ router.post('/polls', function(req,res,next){
         for(var i = 0; i < 10; i++){
           choices.push({text: food[i].name, votes:[]});
         }
-        console.log('Yelp Recommended Choices: ', choices);
+
+        //console.log(survey_choices);
+        for(i in survey_choices){
+          console.log(survey_choices[i].text);
+          choices.push({text: survey_choices[i].text, vote:[]});
+        }
+        console.log(choices);
         var pollObj = {question: question, choices: choices};
         var poll = new Poll(pollObj);
 

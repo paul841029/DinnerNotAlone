@@ -7,6 +7,7 @@ var choiceSchma = new mongoose.Schema({
 });
 exports.PollSchema = new mongoose.Schema({
 	question: {type: String, required: true},
+	location: {type: String, required: true},
 	choices: [choiceSchma],
 	voters: [voterSchema],
 });

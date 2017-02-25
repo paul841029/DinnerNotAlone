@@ -191,6 +191,8 @@ router.post('/polls', function(req,res,next){
   console.log('user.preference',user.preference);
   var preference = user.preference;
   var question = req.body.question
+  
+  console.log('Original Choices: ', req.body.choices);
 
   yelp.search({ term: "Soup", location: '61820' })
       .then(function (data) {
@@ -200,7 +202,7 @@ router.post('/polls', function(req,res,next){
         for(var i = 0; i < 10; i++){
           choices.push({text: food[i].name, votes:[]});
         }
-        console.log(choices);
+        console.log('Yelp Recommended Choices: ', choices);
         var pollObj = {question: question, choices: choices};
         var poll = new Poll(pollObj);
 

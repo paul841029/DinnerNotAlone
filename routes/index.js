@@ -190,6 +190,7 @@ router.post('/polls', function(req,res,next){
   var user = req.user;
   console.log('user.preference',user.preference);
   var preference = user.preference;
+
   var question = req.body.question;
   var survey_choices = req.body.choices;
 
@@ -201,6 +202,7 @@ router.post('/polls', function(req,res,next){
         for(var i = 0; i < 10; i++){
           choices.push({text: food[i].name, votes:[]});
         }
+
         //console.log(survey_choices);
         for(i in survey_choices){
           console.log(survey_choices[i].text);

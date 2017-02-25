@@ -14,6 +14,8 @@ var PollSchema = require('../models/poll.js').PollSchema;
 var Poll = db.model('polls', PollSchema);
 var User = require('../models/user.js');
 var curr_user = '';
+var yelp_data = require('./yelp.js');
+
 ///login
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler 
@@ -24,7 +26,7 @@ var isAuthenticated = function (req, res, next) {
     return next();
   }
   // if the user is not authenticated then redirect him to the login page
-  res.redirect('/')
+  res.redirect('/');
 }
 
 //yelp api
@@ -165,62 +167,26 @@ router.get('/polls/:id', function(req,res,next){
   });
 })
 
-// var getData = function performAsyncOperation(data, onCompletion) {
-//     var bag = [];
-//     var box = [];
-//     var count  = 0;
 
-//     async.forEach(data.item, function(item, callback){
-//         async.forEach(item.name, function(name, callback){
-//             count += 1;
-//             callApi(item.name, function(obj){
-//                bag.push(obj);
-//                count -= 1;
-//                if (count == 0) {
-//                    onCompletion(null, { bag:bag, box:box });
-//                }
-//             });
-//             callback();
-//         }
-//        box.push(item);
-//        callback();
-//     });
-// }
 router.post('/polls', function(req,res,next){
   var user = req.user;
   console.log('user.preference',user.preference);
   var preference = user.preference;
-  var question = req.body.question
-
-  yelp.search({ term: "Soup", location: '61820' })
-      .then(function (data) {
-        //console.log(data.businesses);
-        var food = data.businesses;
-        var choices = [];
-        for(var i = 0; i < 10; i++){
-          choices.push({text: food[i].name, votes:[]});
-        }
-        console.log(choices);
-        var pollObj = {question: question, choices: choices};
+  var question = req.body.question;
+  var choices = []
+  yelp_data.get_data(choices,function(response){
+        var pollObj = {question: question, choices: response};
         var poll = new Poll(pollObj);
-
         poll.save(function(err, doc) {
-        if(err || !doc) {
-          throw 'Error';
-        } else {
-          res.json(doc);
-          //res.send({redirect: '/#/poll'+doc._id});
-        }   
-      })
-      .catch(function (err) {
-        console.error(err);
-      });
-    });
-
+          if(err || !doc) {
+            throw 'Error';
+          } else {
+            res.json(doc);
+            //res.send({redirect: '/#/poll'+doc._id});
+          }   
+        })
+  });
+  
 })
-
-
-
-
 
 module.exports = router;

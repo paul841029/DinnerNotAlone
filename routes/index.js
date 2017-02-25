@@ -172,6 +172,7 @@ router.post('/polls', function(req,res,next){
   var user = req.user;
   console.log('user.preference',user.preference);
   var preference = user.preference;
+
   var question = req.body.question;
   var choices = []
   yelp_data.get_data(choices,function(response){

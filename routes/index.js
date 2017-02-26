@@ -16,6 +16,7 @@ var User = require('../models/user.js');
 var curr_user = '';
 var yelp_data = require('./yelp.js');
 var twilio_sms = require('./twilio.js');
+var fbmessage = require('./fbmessage.js');
 
 ///login
 var isAuthenticated = function (req, res, next) {
@@ -204,10 +205,10 @@ router.post('/polls', function(req,res,next){
           }   
         })
   });
-  var message = "Once upon a time";
-  twilio_sms.sendSms(message);
+  var message = "Please pick a place to eat!" ;
+  //twilio_sms.sendSms(message);
   console.log("Should send a message");
-
+  fbmessage.sendFbMessage(message);
 })
 
 module.exports = router;

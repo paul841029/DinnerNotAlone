@@ -7,6 +7,7 @@ module.exports = mongoose.model('User',{
 	firstName: String,
 	lastName: String,
 	email: String,
+	pic: String,
 	owned: [poll],
 	preference: [String]
 });

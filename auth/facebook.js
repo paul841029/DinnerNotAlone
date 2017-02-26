@@ -1,6 +1,7 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../models/user');
 var fbConfig = require('./fb.js');
+var FacebookChat = require("facebook-chat");
 
 module.exports = function(passport) {
 
@@ -8,18 +9,15 @@ module.exports = function(passport) {
         clientID        :fbConfig.appID,
         clientSecret    :fbConfig.appSecret,
         callbackURL     :fbConfig.callbackUrl,
-        profileFields: ['id', 'emails', 'name']
-    },
+        profileFields: ['id', 'emails', 'name', 'photos']
+    }, 
 
     // facebook will send back the tokens and profile
     function(access_token, refresh_token, profile, done) {
-
 		// asynchronous
 		process.nextTick(function() {
-
 			// find the user in the database based on their facebook id
 	        User.findOne({ 'id' : profile.id }, function(err, user) {
-
 	        	// if there is an error, stop everything and return that
 	        	// ie an error connecting to the database
 	            if (err)
@@ -39,6 +37,8 @@ module.exports = function(passport) {
 	                newUser.lastName = profile.name.familyName; // look at the passport user profile to see how names are returned
 	                newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 	                newUser.preference = ["Asian Food","Mexican Food"];
+	                newUser.pic = profile.photos[0].value;
+	                //newUser.pic = "https://graph.facebook.com/" + profile.username + "/picture" + "?width=200&height=200" + "&access_token=" + access_token
 					// save our user to the database
 	                newUser.save(function(err) {
 	                    if (err)
@@ -47,11 +47,14 @@ module.exports = function(passport) {
 	                    // if successful, return the new user
 	                    return done(null, newUser);
 	                });
-	            }
+	            };
 
-	        });
+	        })
         });
 
     }));
 
 };
+
+
+

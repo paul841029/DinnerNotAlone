@@ -7,9 +7,9 @@ var yelp = new Yelp({
   token_secret: '4UsxJ_10D2vR7vNSwvgVIG5PYsE',
 });
 
-function search(location, _callback){
+function search(location, preference, _callback){
     console.log("search");
-    yelp.search({ term: "Soup", location: location })
+    yelp.search({ term: preference, location: location })
       .then(function (data) {
         //console.log(data.businesses);
         var food = data.businesses;
@@ -37,8 +37,8 @@ function search(location, _callback){
   }
 
   module.exports = {
-  	get_data: function(location,callback){
-    	search(location,function(response){
+  	get_data: function(location, preference, callback){
+    	search(location, preference, function(response){
       	console.log("Im done");
       	//console.log(response);
       	callback(response);

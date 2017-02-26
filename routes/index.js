@@ -15,6 +15,7 @@ var Poll = db.model('polls', PollSchema);
 var User = require('../models/user.js');
 var curr_user = '';
 var yelp_data = require('./yelp.js');
+var twilio_sms = require('./twilio.js');
 
 ///login
 var isAuthenticated = function (req, res, next) {
@@ -178,14 +179,19 @@ router.post('/polls', function(req,res,next){
   var question = req.body.question;
   var survey_choices = req.body.choices;
   var location = req.body.location;
-  yelp_data.get_data(location,function(response){
+  var preference = req.body.preference;
+  if(typeof variableName == 'undefined'){
+    preference = "soul food";
+    console.log(preference);
+  }
+  yelp_data.get_data(location, preference, function(response){
         console.log(location);
         for(i in survey_choices){
           if(survey_choices[i].text.length > 0){
             response.push({text: survey_choices[i].text, vote:[]});
           }
         }
-        var pollObj = {question: question, choices: response, location: location};
+        var pollObj = {question: question, choices: response, location: location, preference: preference};
         
         var poll = new Poll(pollObj);
         poll.save(function(err, doc) {
@@ -198,6 +204,9 @@ router.post('/polls', function(req,res,next){
           }   
         })
   });
+  var message = "Once upon a time";
+  twilio_sms.sendSms(message);
+  console.log("Should send a message");
 
 })
 

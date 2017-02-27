@@ -6,4 +6,5 @@ block content
         a.navbar-brand(href='/home')= title
   div.container
     h1 Hello #{user.firstName} #{user.lastName} 
+    img(src=user.pic, alt='Imagine this is your profile pic', style='50:50;50:50;')
     div(ng-view)

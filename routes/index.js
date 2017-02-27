@@ -207,8 +207,8 @@ router.post('/polls', function(req,res,next){
   });
   var message = "Please pick a place to eat!" ;
   //twilio_sms.sendSms(message);
-  console.log("Should send a message");
-  fbmessage.sendFbMessage(message);
+  //console.log("Should send a message");
+  //fbmessage.sendFbMessage(message);
 })
 
 module.exports = router;

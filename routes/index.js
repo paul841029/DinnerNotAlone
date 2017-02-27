@@ -16,7 +16,6 @@ var User = require('../models/user.js');
 var curr_user = '';
 var yelp_data = require('./yelp.js');
 var twilio_sms = require('./twilio.js');
-var fbmessage = require('./fbmessage.js');
 
 ///login
 var isAuthenticated = function (req, res, next) {
